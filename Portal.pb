@@ -189,8 +189,3 @@ Repeat
   RenderWorld(30)
   FlipBuffers()  
 Until KeyboardReleased(#PB_Key_Escape) Or MouseButton(#PB_MouseButton_Middle)
-; IDE Options = PureBasic 6.01 LTS beta 2 (Windows - x64)
-; CursorPosition = 119
-; FirstLine = 128
-; EnableXP
-; EnableUnicode
