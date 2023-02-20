@@ -9,13 +9,13 @@ IncludeFile "CausticEffect.pbi"
 Global drx.f, dry.f
 
 ; Caméras
-Define Camera, Rot.f
+Global Camera, Rot.f
 
 ; Entités
-Define Mesh, Material, Cube, BlueWater
+Global Mesh, Material, Cube, BlueWater
 
 ; Delta Time
-Define dt.f
+Global dt.f
 
 ; Initialisatio environnement 3D
 drx = DesktopResolutionX()
