@@ -1,4 +1,4 @@
-﻿; 
+; 
 ; Portal version 1.0
 ;
 EnableExplicit
@@ -7,11 +7,14 @@ IncludeFile "CausticEffect.pbi"
 ; Window
 Global Window
 
+; DPI Résolution
+Global drx.f, dry.f
+
 ; Entités
 Global Mesh, Material, Entity, Ground, Portal, Door, PortalGround, Water
 
 ; Camera
-Global Camera, Hight.f, Distance.f = 1
+Global Camera, Hight.f, Distance.f = 2
 
 ; MaterialCaustic
 Global BlueWater, BlackPortal, BlackGround
@@ -19,11 +22,16 @@ Global BlueWater, BlackPortal, BlackGround
 ; Player : Vue à la troisiéme personne 
 Global Player, Rotation.f, PlayerSpeed.f
 
+; Delta Time
+Global dt.f
 ; Initialisation de l'environnement 3D 
-InitEngine3D() : InitKeyboard() : InitSprite() : InitMouse()
-Window = OpenWindow(#PB_Any, 0, 0, 0, 0, "", #PB_Window_Maximize | #PB_Window_BorderLess)
-OpenWindowedScreen(WindowID(Window),0, 0, WindowWidth(Window) , WindowHeight(Window))   
-KeyboardMode(#PB_Keyboard_International)
+drx = DesktopResolutionX()
+dry = DesktopResolutionY()
+ExamineDesktops()
+InitEngine3D(#PB_Engine3D_DebugLog) : InitSprite() : InitKeyboard() : InitMouse()
+OpenWindow(0, 0, 0, DesktopWidth(0), DesktopHeight(0), "", #PB_Window_Maximize | #PB_Window_BorderLess)
+OpenWindowedScreen(WindowID(0),0, 0, WindowWidth(0)*drx , WindowHeight(0)*dry) 
+
 
 ; Localisation des assets
 Add3DArchive("Data/skybox/Early_morning.zip", #PB_3DArchive_Zip) 
@@ -43,7 +51,7 @@ Add3DArchive("assets/skybox/Early_morning.zip", #PB_3DArchive_Zip)
 SkyBox("Early_morning.jpg")
 
 ;- Sol
-Mesh = CreatePlane(#PB_Any, 5, 24, 4, 4, 1, 1)
+Mesh = CreatePlane(#PB_Any, 5, 24, 1, 1, 1, 1)
 Material = CreateMaterial(#PB_Any, TextureID(LoadTexture(#PB_Any, "Beton1.png")))
 ScaleMaterial(Material, 1, 0.1)
 Ground = CreateEntity(#PB_Any, MeshID(Mesh), MaterialID(Material)) 
@@ -152,10 +160,10 @@ Repeat
   ; Evenements souris
   If ExamineMouse()
     ; Rotation du player
-    Rotation = -MouseDeltaX() * 0.25   
+    Rotation = -MouseDeltaX() * 2 * (1+dt)  
     
     ; Hauteur de la camera 
-    Hight + MouseDeltaY() * 0.1
+    Hight + MouseDeltaY() * 0.1 * (1+dt)
     If Hight < -4
       Hight= -4
     EndIf        
@@ -164,17 +172,17 @@ Repeat
   ; Evenements claviers
   If ExamineKeyboard()
     If KeyboardPushed(#PB_Key_Left) Or KeyboardPushed(#PB_Key_Q) 
-      Rotation = 0.5 
+      Rotation = 0.5 * (1+dt)
     ElseIf KeyboardPushed(#PB_Key_Right) Or KeyboardPushed(#PB_Key_D)
-      Rotation = -0.5
+      Rotation = -0.5 * (1+dt)
     EndIf
     
     If KeyboardPushed(#PB_Key_Up) Or KeyboardPushed(#PB_Key_Z)
-      PlayerSpeed = -1
+      PlayerSpeed = -2 * (1+dt)
     ElseIf KeyboardPushed(#PB_Key_Down) Or KeyboardPushed(#PB_Key_S)
-      PlayerSpeed = 1
+      PlayerSpeed = 2 * (1+dt) 
     Else
-      PlayerSpeed = 0
+      PlayerSpeed = 0 * (1+dt)
     EndIf       
   EndIf
   
@@ -186,6 +194,6 @@ Repeat
   CameraFollow(Camera, EntityID(Player), 0, EntityY(Player) + Hight, Distance, 1, 1, #True)
   
   ; Rendering de la scene
-  RenderWorld(30)
+  dt = RenderWorld()/1000
   FlipBuffers()  
 Until KeyboardReleased(#PB_Key_Escape) Or MouseButton(#PB_MouseButton_Middle)
