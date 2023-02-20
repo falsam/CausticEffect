@@ -23,7 +23,7 @@ dry = DesktopResolutionY()
 ExamineDesktops()
 InitEngine3D(#PB_Engine3D_DebugLog) : InitSprite() : InitKeyboard() : InitMouse()
 OpenWindow(0, 0, 0, DesktopWidth(0), DesktopHeight(0), "", #PB_Window_Maximize | #PB_Window_BorderLess)
-OpenWindowedScreen(WindowID(0),0, 0, WindowWidth(0)*drx , WindowHeight(0)*dry) 
+OpenWindowedScreen(WindowID(0), 0, 0, WindowWidth(0)*drx , WindowHeight(0)*dry) 
 
 ; Un peu de lumiere
 CreateLight(#PB_Any, RGB(255, 255, 255), 10, 10, 10)
@@ -55,10 +55,10 @@ Repeat
   CausticWater::UpdateGroupMaterial(Cube)
   
   ; Rotation des entités
-  RotateEntity(Cube, 0.1*(1+dt), 0.1*(1+dt), 0.1*(1+dt), #PB_Relative)
+  RotateEntity(Cube, 20*dt, 20*dt, 20*dt, #PB_Relative)
   
   ; Rotation de la camera principale
-  Rot + 0.002 * (1+dt)
+  Rot + 0.2 * dt
   MoveCamera(Camera, Cos(Rot)*50, 15, Sin(Rot)*50, #PB_Absolute)
   CameraLookAt(Camera, 0, 0, 0)
       
