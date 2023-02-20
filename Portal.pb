@@ -160,29 +160,29 @@ Repeat
   ; Evenements souris
   If ExamineMouse()
     ; Rotation du player
-    Rotation = -MouseDeltaX() * 2 * (1+dt)  
+    Rotation = -MouseDeltaX() * 20 * dt  
     
     ; Hauteur de la camera 
-    Hight + MouseDeltaY() * 0.1 * (1+dt)
-    If Hight < -4
-      Hight= -4
+    Hight + MouseDeltaY() * 10 * dt
+    If Hight < -2
+      Hight= -2
     EndIf        
   EndIf
   
   ; Evenements claviers
   If ExamineKeyboard()
     If KeyboardPushed(#PB_Key_Left) Or KeyboardPushed(#PB_Key_Q) 
-      Rotation = 0.5 * (1+dt)
+      Rotation = 50 * dt
     ElseIf KeyboardPushed(#PB_Key_Right) Or KeyboardPushed(#PB_Key_D)
-      Rotation = -0.5 * (1+dt)
+      Rotation = -50 * dt
     EndIf
     
     If KeyboardPushed(#PB_Key_Up) Or KeyboardPushed(#PB_Key_Z)
-      PlayerSpeed = -2 * (1+dt)
+      PlayerSpeed = -300 * dt
     ElseIf KeyboardPushed(#PB_Key_Down) Or KeyboardPushed(#PB_Key_S)
-      PlayerSpeed = 2 * (1+dt) 
+      PlayerSpeed = 300 * dt 
     Else
-      PlayerSpeed = 0 * (1+dt)
+      PlayerSpeed = 0
     EndIf       
   EndIf
   
